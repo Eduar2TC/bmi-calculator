@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 
 class Box extends StatelessWidget {
   const Box({
-    super.key,
+    Key? key,
     this.internalWidget,
-    this.isGenderContainer,
-  });
+    this.isSelected = false, // Gender unselected by default
+  }) : super(key: key);
 
   final Widget? internalWidget;
+  final bool isSelected;
 
-  final bool? isGenderContainer;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -22,9 +22,7 @@ class Box extends StatelessWidget {
         color: activeBoxColor,
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
-          color: isGenderContainer!
-              ? activeBoxBorderColor
-              : inactiveBoxBorderColor,
+          color: isSelected ? activeBoxBorderColor : inactiveBoxBorderColor,
           width: 2,
         ),
         boxShadow: [

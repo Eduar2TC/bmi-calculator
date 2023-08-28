@@ -28,48 +28,57 @@ class _HeightCardState extends State<HeightCard> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        const DropdownOption(),
-        Wrap(
-          alignment: WrapAlignment.spaceAround,
-          direction: Axis.horizontal,
-          spacing: 20, //TODO: modify this value later
-          children: [
-            ValueListenableBuilder(
-              valueListenable: heightNotifier,
-              builder: (context, value, _) => SelectionPicker(
-                key: pickerKey,
-                longitude: heightNotifier.value == 'Height (inch)' ? 'ft' : 'm',
-                callback: setValueA,
-              ),
-            ),
-            ValueListenableBuilder(
-              valueListenable: heightNotifier,
-              builder: (context, value, _) => SelectionPicker(
-                key: pickerKey,
-                longitude:
-                    heightNotifier.value == 'Height (inch)' ? 'in' : 'cm',
-                callback: setValueB,
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(
-          height: 5,
-        ),
-        Flexible(
-          child: Text(
-            textAlign: TextAlign.center,
-            '$valueA feet $valueB inches (${(valueA! * 30.48).toInt() + (valueB! * 2.54).toInt()} cm)',
-            style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                  color: Colors.black,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 18, //TODO: modify this value later
+    return LayoutBuilder(
+      builder: (context, constraints) => Column(
+        children: [
+          const DropdownOption(),
+          Wrap(
+            alignment: WrapAlignment.spaceAround,
+            direction: Axis.horizontal,
+            spacing:
+                constraints.maxWidth * 0.05, //TODO: modify this value later
+            children: [
+              ValueListenableBuilder(
+                valueListenable: heightNotifier,
+                builder: (context, value, _) => SelectionPicker(
+                  key: pickerKey,
+                  longitude:
+                      heightNotifier.value == 'Height (inch)' ? 'ft' : 'm',
+                  callback: setValueA,
                 ),
+              ),
+              ValueListenableBuilder(
+                valueListenable: heightNotifier,
+                builder: (context, value, _) => SelectionPicker(
+                  key: pickerKey,
+                  longitude:
+                      heightNotifier.value == 'Height (inch)' ? 'in' : 'cm',
+                  callback: setValueB,
+                ),
+              ),
+            ],
           ),
-        ),
-      ],
+          SizedBox(
+            height: constraints.maxWidth * 0.05, //TODO: modify this value later
+          ),
+          Flexible(
+            child: ValueListenableBuilder(
+              valueListenable: heightNotifier,
+              builder: (context, value, _) => Text(
+                textAlign: TextAlign.center,
+                heightNotifier.value == 'Height (inch)'
+                    ? '$valueA feet $valueB inches (${(valueA! * 30.48).toInt() + (valueB! * 2.54).toInt()} cm)'
+                    : '$valueA mts $valueB cms (${(valueA! * 39.37).toInt() + (valueB! * 0.393).toInt()} inches)',
+                style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                      color: Colors.black,
+                      fontWeight: FontWeight.w500,
+                      fontSize: 18, //TODO: modify this value later
+                    ),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -110,7 +119,6 @@ class _DropdownOptionState extends State<DropdownOption> {
           setInnerState(() {
             heightNotifier.value = value!;
             pickerKey = UniqueKey();
-            //maxValue = value == 'Height (inch)' ? 12 : 100;
           });
         },
         items: listValues.map<DropdownMenuItem<String>>((String value) {
@@ -184,9 +192,9 @@ class _SelectionPickerState extends State<SelectionPicker> {
         },
         axis: Axis.vertical,
         minValue: 1,
-        maxValue: maxValue!, //TODO: modify this value later
+        maxValue: maxValue, //TODO: modify this value later
         itemWidth: screenWidth * 0.25, //TODO: modify this value later
-        itemHeight: screenHeight * 0.045,
+        itemHeight: screenHeight * 0.050,
         textStyle: TextStyle(
           color: Colors.black.withOpacity(0.2),
           fontSize: 18, //TODO: modify this value later
@@ -205,10 +213,6 @@ class _SelectionPickerState extends State<SelectionPicker> {
         ),
         onChanged: (int value) {
           int newMaxValue = changeMaxLimit(widget.longitude);
-          //maxValue = newMaxValue > maxValue! ? newMaxValue : maxValue;
-
-          print(
-              "maxValue: ${maxValue.toString()} Longitude: ${widget.longitude}");
           if (value > newMaxValue) {
             setState(() {
               currentValue = newMaxValue;

@@ -51,7 +51,7 @@ class _HomePageState extends State<HomePage> {
                         });
                       },
                       child: Box(
-                        isGenderContainer: maleSelected,
+                        isSelected: maleSelected ? true : false,
                         internalWidget: const gender(
                           isMan: true,
                         ),
@@ -63,10 +63,11 @@ class _HomePageState extends State<HomePage> {
                       onTap: () {
                         setState(() {
                           genderSelected(Gender.female);
+                          print('female selected $femaleSelected');
                         });
                       },
                       child: Box(
-                        isGenderContainer: femaleSelected,
+                        isSelected: femaleSelected ? true : false,
                         internalWidget: const gender(
                           isMan: false,
                         ),
@@ -79,19 +80,18 @@ class _HomePageState extends State<HomePage> {
             const Expanded(
               flex: 5500,
               child: Box(
-                isGenderContainer: false,
                 internalWidget: HeightCard(),
               ),
             ),
-            Expanded(
+            const Expanded(
               flex: 4000,
               child: Row(
-                children: const [
+                children: [
                   Expanded(
-                    child: Box(isGenderContainer: false),
+                    child: Box(),
                   ),
                   Expanded(
-                    child: Box(isGenderContainer: false),
+                    child: Box(),
                   ),
                 ],
               ),
