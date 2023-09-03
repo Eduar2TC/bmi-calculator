@@ -2,13 +2,16 @@ import 'package:bmi_calculator/custom_widgets/custom_app_bar.dart';
 import 'package:bmi_calculator/pages/home/custom_widgets/box.dart';
 import 'package:bmi_calculator/pages/home/custom_widgets/gender.dart';
 import 'package:bmi_calculator/pages/home/custom_widgets/height_card.dart';
+import 'package:bmi_calculator/pages/home/custom_widgets/weight.dart';
 import 'package:flutter/material.dart';
+
+import '../../helpers/sizes_helpers.dart';
 
 //Button Colors
 const activeButtonColor = Color(0xFF4F7DF9);
 const activeTextColor = Colors.white;
 
-enum Gender { male, female }
+enum GenderOption { male, female }
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -20,13 +23,15 @@ class _HomePageState extends State<HomePage> {
   bool maleSelected = false;
   bool femaleSelected = false;
 
-  void genderSelected(Gender genderSelected) {
-    femaleSelected = genderSelected == Gender.male ? false : true;
-    maleSelected = genderSelected == Gender.female ? false : true;
+  void genderSelected(GenderOption genderSelected) {
+    femaleSelected = genderSelected == GenderOption.male ? false : true;
+    maleSelected = genderSelected == GenderOption.female ? false : true;
   }
 
   @override
   Widget build(BuildContext context) {
+    displayHeight(context);
+    displayWidth(context);
     return Scaffold(
       appBar: null,
       body: Padding(
@@ -44,33 +49,28 @@ class _HomePageState extends State<HomePage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Expanded(
-                    child: GestureDetector(
-                      onTap: () {
+                    child: Box(
+                      onPress: () {
                         setState(() {
-                          genderSelected(Gender.male);
+                          genderSelected(GenderOption.male);
                         });
                       },
-                      child: Box(
-                        isSelected: maleSelected ? true : false,
-                        internalWidget: const gender(
-                          isMan: true,
-                        ),
+                      isSelected: maleSelected,
+                      internalWidget: const Gender(
+                        isMan: true,
                       ),
                     ),
                   ),
                   Expanded(
-                    child: GestureDetector(
-                      onTap: () {
+                    child: Box(
+                      onPress: () {
                         setState(() {
-                          genderSelected(Gender.female);
-                          print('female selected $femaleSelected');
+                          genderSelected(GenderOption.female);
                         });
                       },
-                      child: Box(
-                        isSelected: femaleSelected ? true : false,
-                        internalWidget: const gender(
-                          isMan: false,
-                        ),
+                      isSelected: femaleSelected,
+                      internalWidget: const Gender(
+                        isMan: false,
                       ),
                     ),
                   ),
@@ -88,7 +88,9 @@ class _HomePageState extends State<HomePage> {
               child: Row(
                 children: [
                   Expanded(
-                    child: Box(),
+                    child: Box(
+                      internalWidget: Weight(),
+                    ),
                   ),
                   Expanded(
                     child: Box(),

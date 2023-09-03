@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:numberpicker/numberpicker.dart';
 
-//Global Notifier
 final ValueNotifier<String> heightNotifier = ValueNotifier<String>('');
 int? valueA = 5;
 int? valueB = 3;

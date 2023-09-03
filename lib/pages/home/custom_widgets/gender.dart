@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-class gender extends StatelessWidget {
-  const gender({super.key, this.isMan});
+class Gender extends StatelessWidget {
+  const Gender({super.key, this.isMan});
   final bool? isMan;
 
   @override
