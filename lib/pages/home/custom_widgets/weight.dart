@@ -90,7 +90,7 @@ class _WeightPickerState extends State<WeightPicker> {
   //return actual width of slider to be able to slide
   double get drawingWidth {
     double totalWidth = widget.widgetWidth!;
-    return totalWidth;
+    return totalWidth - 15; //TODO: delete left and right margins
   }
 
   @override
@@ -163,7 +163,9 @@ class _WeightPickerState extends State<WeightPicker> {
       ),
     ).reversed.toList();
     return Padding(
-      padding: const EdgeInsets.only(bottom: 5.0),
+      padding: const EdgeInsets.only(
+        bottom: 5.0,
+      ),
       child: Align(
         alignment: Alignment.bottomCenter,
         child: IgnorePointer(
@@ -179,7 +181,7 @@ class _WeightPickerState extends State<WeightPicker> {
   Widget drawSlider() {
     print('sliderPosition: $sliderPosition');
     return Positioned(
-      top: 90,
+      top: 80,
       left: sliderPosition,
       child: WidthSlider(
         width: widget.width!,
@@ -195,7 +197,6 @@ class _WeightPickerState extends State<WeightPicker> {
         height: 50,
         child: SvgPicture.asset(
           'lib/assets/man012.svg',
-          height: null,
           width: personImageWidth,
           fit: BoxFit.fill,
         ),
@@ -237,6 +238,7 @@ class _DropDownButtonState extends State<DropDownButton> {
       elevation: 16,
       borderRadius: borderRadiusDropdown,
       underline: const SizedBox(),
+      isExpanded: false,
       onChanged: (String? value) {
         setState(() {
           dropdownValue = value!;

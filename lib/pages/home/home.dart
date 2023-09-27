@@ -1,4 +1,5 @@
 import 'package:bmi_calculator/custom_widgets/custom_app_bar.dart';
+import 'package:bmi_calculator/pages/home/custom_widgets/age.dart';
 import 'package:bmi_calculator/pages/home/custom_widgets/box.dart';
 import 'package:bmi_calculator/pages/home/custom_widgets/gender.dart';
 import 'package:bmi_calculator/pages/home/custom_widgets/height_card.dart';
@@ -93,7 +94,9 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                   Expanded(
-                    child: Box(),
+                    child: Box(
+                      internalWidget: Age(),
+                    ),
                   ),
                 ],
               ),
