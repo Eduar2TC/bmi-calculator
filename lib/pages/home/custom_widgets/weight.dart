@@ -31,11 +31,6 @@ class _WeightState extends State<Weight> {
               builder: (context, constraints) => WeightPicker(
                 widgetWidth: constraints.maxWidth,
                 width: width ?? 40,
-                //value: weight,
-                //minValue: 30,
-                //maxValue: 150,
-                //step: 1,
-                //unit: 'kg',
                 onValueChanged: (value) {
                   setState(() {
                     width = value;
@@ -55,8 +50,6 @@ class WeightPicker extends StatefulWidget {
   final int? width;
   final int minWidth;
   final int maxWidth;
-  //final int step;
-  //final String unit;
   final ValueChanged<int>? onValueChanged;
 
   const WeightPicker({
@@ -65,8 +58,6 @@ class WeightPicker extends StatefulWidget {
     this.width,
     this.minWidth = 40,
     this.maxWidth = 100,
-    //required this.step,
-    //required this.unit,
     this.onValueChanged,
   });
 
@@ -81,6 +72,7 @@ class _WeightPickerState extends State<WeightPicker> {
   late int startDragWidth;
   double get pixelsPerUnit => drawingWidth / widget.totalUnits;
   double get drawWidthSlider => widget.widgetWidth!; //TODO: delete margins
+  bool tapped = false;
 
   double get sliderPosition {
     int unitsFromLeft = widget.width! - widget.minWidth;
@@ -100,11 +92,41 @@ class _WeightPickerState extends State<WeightPicker> {
       onTapDown: onTapDown,
       onHorizontalDragStart: onDragStart,
       onHorizontalDragUpdate: onDragUpdate,
+      onTapCancel: () {
+        setState(() {
+          tapped = false;
+        });
+      },
+      onPanDown: (details) {
+        setState(() {
+          tapped = true;
+        });
+      },
+      onPanCancel: () {
+        setState(() {
+          tapped = false;
+        });
+      },
+      onPanEnd: (details) {
+        setState(() {
+          tapped = false;
+        });
+      },
+      onHorizontalDragCancel: () {
+        setState(() {
+          tapped = false;
+        });
+      },
+      onHorizontalDragEnd: (_) {
+        setState(() {
+          tapped = false;
+        });
+      },
       child: Stack(
         children: [
           drawDropDownButton(),
           drawPerson(),
-          drawSlider(),
+          drawSlider(tapped),
           drawLabels(),
         ],
       ),
@@ -115,6 +137,9 @@ class _WeightPickerState extends State<WeightPicker> {
     int width = globalOffsetToWidth(details.globalPosition);
     widget.onValueChanged!(normalizeWidth(width));
     print('onTapDown ---------> ${widget.width}');
+    setState(() {
+      tapped = true;
+    });
   }
 
   int normalizeWidth(int width) {
@@ -147,6 +172,7 @@ class _WeightPickerState extends State<WeightPicker> {
     int newWidth = normalizeWidth(startDragWidth - widthDifference);
     setState(() {
       widget.onValueChanged!(newWidth);
+      tapped = true;
     });
   }
 
@@ -178,13 +204,14 @@ class _WeightPickerState extends State<WeightPicker> {
     );
   }
 
-  Widget drawSlider() {
+  Widget drawSlider(bool tapped) {
     print('sliderPosition: $sliderPosition');
     return Positioned(
       top: 80,
       left: sliderPosition,
       child: WidthSlider(
         width: widget.width!,
+        tapped: tapped,
       ),
     );
   }
@@ -244,18 +271,20 @@ class _DropDownButtonState extends State<DropDownButton> {
           dropdownValue = value!;
         });
       },
-      items: options.map<DropdownMenuItem<String>>((String value) {
-        return DropdownMenuItem<String>(
-          value: value,
-          child: Text(
-            value,
-            style: TextStyle(
-              color: textColorItem,
-              fontSize: Theme.of(context).textTheme.bodyMedium!.fontSize,
+      items: options.map<DropdownMenuItem<String>>(
+        (String value) {
+          return DropdownMenuItem<String>(
+            value: value,
+            child: Text(
+              value,
+              style: TextStyle(
+                color: textColorItem,
+                fontSize: Theme.of(context).textTheme.bodyMedium!.fontSize,
+              ),
             ),
-          ),
-        );
-      }).toList(),
+          );
+        },
+      ).toList(),
     );
   }
 
@@ -267,20 +296,22 @@ class _DropDownButtonState extends State<DropDownButton> {
 
 class WidthSlider extends StatelessWidget {
   final int? width;
-  const WidthSlider({super.key, this.width});
+  final bool? tapped;
+  const WidthSlider({super.key, this.width, this.tapped});
 
   @override
   Widget build(BuildContext context) {
     return IgnorePointer(
+      ignoring: false,
       child: Column(
         children: [
           SliderLabel(
             width: width!,
           ),
-          const Column(
+          Column(
             children: [
-              SliderCircle(),
-              SizedBox(
+              SliderCircle(tapped: tapped), //passing tapped to change shadow
+              const SizedBox(
                 child: SliderLine(),
               ),
             ],
@@ -315,19 +346,40 @@ class SliderLine extends StatelessWidget {
 }
 
 class SliderCircle extends StatelessWidget {
-  const SliderCircle({super.key});
+  final bool? tapped;
+  const SliderCircle({super.key, this.tapped});
 
+  //TODO: CORREGIR ESTO DESDE EL WIDGET PADRE
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return AnimatedContainer(
+      duration: const Duration(
+        milliseconds: 500,
+      ),
+      curve: Curves.easeInOutCubic,
       width: 15,
       height: 15,
       decoration: BoxDecoration(
         color: Theme.of(context).primaryColor,
         shape: BoxShape.circle,
+        boxShadow: [
+          tapped == true
+              ? BoxShadow(
+                  color: Colors.black.withOpacity(0.3),
+                  spreadRadius: 15,
+                  blurRadius: 0.0,
+                  offset: const Offset(0, 1.0), // changes position of shadow
+                )
+              : BoxShadow(
+                  color: Colors.black.withOpacity(0.0),
+                  spreadRadius: 0,
+                  blurRadius: 0.0,
+                  offset: const Offset(0, 1.0), // changes position of shadow
+                )
+        ],
       ),
       child: Transform.rotate(
-        angle: 3.141592 / 2,
+        angle: math.pi / 2,
         child: const Icon(
           Icons.unfold_more,
           color: Colors.white,

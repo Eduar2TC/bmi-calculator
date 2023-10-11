@@ -7,29 +7,42 @@ class RoundedButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //final keyValue = (key as ValueKey).value;
+    double width = MediaQuery.of(context).size.width;
     return TextButton(
       onPressed: () {
         onPress!();
       },
-      style: const ButtonStyle(
+      style: ButtonStyle(
+        overlayColor: MaterialStatePropertyAll(
+          Colors.blue.withOpacity(0.2),
+        ),
+        animationDuration: const Duration(
+          milliseconds: 5000,
+        ),
         minimumSize: MaterialStatePropertyAll(
           Size(
-            25.0,
-            25.0,
+            width * 0.1,
+            width * 0.1,
           ),
         ),
-        iconColor: MaterialStatePropertyAll(
+        maximumSize: MaterialStatePropertyAll(
+          Size(
+            width * 0.15,
+            width * 0.15,
+          ),
+        ),
+        iconColor: const MaterialStatePropertyAll(
           Colors.black,
         ),
-        shape: MaterialStatePropertyAll(
+        shape: const MaterialStatePropertyAll(
           CircleBorder(),
         ),
         alignment: Alignment.center,
-        padding: MaterialStatePropertyAll(EdgeInsets.zero),
-        backgroundColor: MaterialStatePropertyAll(
+        padding: const MaterialStatePropertyAll(EdgeInsets.zero),
+        backgroundColor: const MaterialStatePropertyAll(
           Colors.white,
         ),
-        elevation: MaterialStatePropertyAll(
+        elevation: const MaterialStatePropertyAll(
           2.0,
         ),
       ),

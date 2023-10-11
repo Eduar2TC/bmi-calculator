@@ -2,7 +2,7 @@ import 'package:bmi_calculator/custom_widgets/custom_app_bar.dart';
 import 'package:bmi_calculator/pages/home/custom_widgets/age.dart';
 import 'package:bmi_calculator/pages/home/custom_widgets/box.dart';
 import 'package:bmi_calculator/pages/home/custom_widgets/gender.dart';
-import 'package:bmi_calculator/pages/home/custom_widgets/height_card.dart';
+import 'package:bmi_calculator/pages/home/custom_widgets/height.dart';
 import 'package:bmi_calculator/pages/home/custom_widgets/weight.dart';
 import 'package:flutter/material.dart';
 
@@ -81,7 +81,7 @@ class _HomePageState extends State<HomePage> {
             const Expanded(
               flex: 5500,
               child: Box(
-                internalWidget: HeightCard(),
+                internalWidget: Height(),
               ),
             ),
             const Expanded(

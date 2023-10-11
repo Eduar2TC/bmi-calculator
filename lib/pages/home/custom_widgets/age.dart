@@ -37,17 +37,30 @@ class _AgeState extends State<Age> {
                 onPress: () {
                   setState(
                     () {
-                      age--;
+                      age >= 1 ? age-- : age = 0;
                     },
                   );
                 },
               ),
-              Text(
-                age.toString(),
-                style: TextStyle(
-                  fontSize: Theme.of(context).textTheme.bodyLarge!.fontSize,
-                  color: const Color(0xFF3D4852),
-                ),
+              Row(
+                textBaseline: TextBaseline.alphabetic,
+                crossAxisAlignment: CrossAxisAlignment.baseline,
+                children: [
+                  Text(
+                    age.toString(),
+                    style: TextStyle(
+                      fontSize: Theme.of(context).textTheme.bodyLarge!.fontSize,
+                      color: const Color(0xFF3D4852),
+                    ),
+                  ),
+                  Text(
+                    'yrs',
+                    style: TextStyle(
+                      fontSize: Theme.of(context).textTheme.bodySmall!.fontSize,
+                      color: Theme.of(context).textTheme.bodySmall!.color,
+                    ),
+                  )
+                ],
               ),
               RoundedButton(
                 key: const Key('age_plus'),
@@ -55,7 +68,7 @@ class _AgeState extends State<Age> {
                 onPress: () {
                   setState(
                     () {
-                      age++;
+                      age < 100 ? age++ : age = 100;
                     },
                   );
                 },

@@ -19,14 +19,13 @@ class MyApp extends StatelessWidget {
       themeMode: ThemeMode.light,
       theme: ThemeData.light().copyWith(
         colorScheme: const ColorScheme.light(
-            /*primary: primaryColor,
-            secondary: Colors.green,
-            onPrimary: Colors.red,
-            onSecondary: Colors.white,
-            onBackground: Colors.black,
-            primaryContainer: Colors.purple,
-            */
-            ),
+          //primary: primaryColor,
+          secondary: Colors.blueAccent, //Scroll glow effect
+          //onPrimary: Colors.red,
+          //onSecondary: Colors.white,
+          //onBackground: Colors.black,
+          //primaryContainer: Colors.purple,
+        ),
         scaffoldBackgroundColor: const Color(0xFFFAFAFA),
         textTheme: const TextTheme(
           headlineLarge: TextStyle(

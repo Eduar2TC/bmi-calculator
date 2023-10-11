@@ -6,13 +6,13 @@ int? valueA = 5;
 int? valueB = 3;
 Key pickerKey = UniqueKey();
 
-class HeightCard extends StatefulWidget {
-  const HeightCard({super.key});
+class Height extends StatefulWidget {
+  const Height({super.key});
   @override
-  State<HeightCard> createState() => _HeightCardState();
+  State<Height> createState() => _HeightState();
 }
 
-class _HeightCardState extends State<HeightCard> {
+class _HeightState extends State<Height> {
   void setValueA(int value, String? longitude) {
     setState(() {
       valueA = value;
@@ -92,7 +92,6 @@ class DropdownOption extends StatefulWidget {
 
 class _DropdownOptionState extends State<DropdownOption> {
   static const List<String> listValues = ['Height (inch)', 'Height (cm)'];
-
   @override
   void initState() {
     heightNotifier.value = listValues.first;
@@ -109,8 +108,9 @@ class _DropdownOptionState extends State<DropdownOption> {
         //internal state for custom dropdown button
         value: heightNotifier.value,
         style: TextStyle(
-            color: textColorItem,
-            fontSize: Theme.of(context).textTheme.bodyMedium!.fontSize),
+          color: textColorItem,
+          fontSize: Theme.of(context).textTheme.bodyMedium!.fontSize,
+        ),
         borderRadius: borderRadiusDropdown,
         underline: const SizedBox(),
         elevation: 9,
